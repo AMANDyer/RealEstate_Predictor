@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealEstateInsight - Property Investment Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #f97316;
+            --secondary-dark: #ea580c;
+            --accent: #3b82f6;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s ease;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, var(--warning) 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+            margin-left: 4px;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: var(--transition);
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        nav ul li a:hover {
+            color: white;
+        }
+        
+        /* Mobile menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 2rem;
+            height: 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        .menu-toggle span {
+            width: 2rem;
+            height: 0.25rem;
+            background: white;
+            border-radius: 10px;
+            transition: var(--transition);
+            position: relative;
+            transform-origin: 1px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1973&q=80') no-repeat center center/cover;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(30, 41, 59, 0.8), rgba(30, 41, 59, 0.6));
+        }
+        
+        .hero-content {
+            position: relative;
+            max-width: 700px;
+            animation: fadeIn 1s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: var(--shadow);
+        }
+        
+        .btn:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn i {
+            margin-left: 8px;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Section Styles */
+        .section {
+            padding: 6rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--darker);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        
+        /* Prediction Form */
+        .prediction-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .prediction-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient);
+        }
+        
+        .prediction-form h3 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--darker);
+            display: flex;
+            align-items: center;
+        }
+        
+        .prediction-form h3 i {
+            margin-right: 12px;
+            color: var(--primary);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-group label i {
+            margin-right: 10px;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--light);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Tabs for form sections */
+        .form-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--gray-light);
+        }
+        
+        .form-tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .form-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .form-tab-content {
+            display: none;
+        }
+        
+        .form-tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Results Section */
+        .results {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .results::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient);
+        }
+        
+        .results-visible {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .results h3 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--darker);
+            display: flex;
+            align-items: center;
+        }
+        
+        .results h3 i {
+            margin-right: 12px;
+            color: var(--success);
+        }
+        
+        .result-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .result-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+        
+        .result-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .result-card h3 {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .price {
+            color: var(--success);
+        }
+        
+        .rent {
+            color: var(--accent);
+        }
+        
+        .label-excellent {
+            color: var(--success);
+        }
+        
+        .label-bad {
+            color: var(--error);
+        }
+        
+        /* History Section */
+        .history {
+            margin-top: 4rem;
+            display: none;
+        }
+        
+        .history-visible {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .history-table th,
+        .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .history-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .history-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        /* Loader */
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        
+        .loader-visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+        
+        .about-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .about-content ul {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+        
+        .about-content ul li {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .about-content ul li strong {
+            color: var(--primary);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--darker);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        footer p {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .result-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .history-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 0.5rem 0.5rem;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            .hero {
+                height: 500px;
+                text-align: center;
+            }
+            
+            .hero-content {
+                text-align: center;
+                margin: 0 auto;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .prediction-form, .results, .about-content {
+                padding: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .form-tabs {
+                flex-direction: column;
+            }
+            
+            .form-tab {
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .prediction-form, .results, .about-content {
+                padding: 1.5rem;
+            }
+            
+            .result-value {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Animation for result cards */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result-card {
+            animation: slideIn 0.5s ease;
+        }
+        
+        .result-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .result-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--error);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .toast.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        /* Floating action button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            z-index: 99;
+            transition: var(--transition);
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo"><i class="fas fa-home"></i>RealEstate<span>Insight</span></div>
+            <button class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#predictor"><i class="fas fa-chart-line"></i> Predictor</a></li>
+                    <li><a href="#history"><i class="fas fa-history"></i> History</a></li>
+                    <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Smart Property Investment Predictions</h1>
+            <p>Get accurate estimates of property values, rental income, and investment potential with our AI-powered prediction models.</p>
+            <a href="#predictor" class="btn">Get Started <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <section id="predictor" class="section">
+        <div class="container">
+            <h2 class="section-title">Property Investment Predictor</h2>
+            
+            <div class="prediction-form">
+                <h3><i class="fas fa-edit"></i> Enter Property Details</h3>
+                
+                <div class="form-tabs">
+                    <div class="form-tab active" data-tab="basic">Basic Info</div>
+                    <div class="form-tab" data-tab="location">Location</div>
+                    <div class="form-tab" data-tab="additional">Additional</div>
+                </div>
+                
+                <form id="propertyForm">
+                    <div class="form-tab-content active" id="basic-tab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="bhk"><i class="fas fa-bed"></i> BHK</label>
+                                <input type="number" id="bhk" class="form-control" min="1" max="10" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="size"><i class="fas fa-ruler-combined"></i> Size (sq. ft.)</label>
+                                <input type="number" id="size" class="form-control" min="100" step="50" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="areaType"><i class="fas fa-vector-square"></i> Area Type</label>
+                                <select id="areaType" class="form-control" required>
+                                    <option value="">Select Area Type</option>
+                                    <option value="Super Area">Super Area</option>
+                                    <option value="Carpet Area">Carpet Area</option>
+                                    <option value="Built Area">Built Area</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="furnishingStatus"><i class="fas fa-couch"></i> Furnishing Status</label>
+                                <select id="furnishingStatus" class="form-control" required>
+                                    <option value="">Select Furnishing Status</option>
+                                    <option value="Unfurnished">Unfurnished</option>
+                                    <option value="Semi-Furnished">Semi-Furnished</option>
+                                    <option value="Fully Furnished">Fully Furnished</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bathroom"><i class="fas fa-bath"></i> Bathroom</label>
+                                <input type="number" id="bathroom" class="form-control" min="1" max="10" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="currentFloor"><i class="fas fa-building"></i> Current Floor</label>
+                                <input type="number" id="currentFloor" class="form-control" min="0" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="totalFloors"><i class="fas fa-layer-group"></i> Total Floors</label>
+                                <input type="number" id="totalFloors" class="form-control" min="1" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-tab-content" id="location-tab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="city"><i class="fas fa-city"></i> City</label>
+                                <select id="city" class="form-control" required>
+                                    <option value="">Select City</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                    <option value="Bangalore">Bangalore</option>
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="Chennai">Chennai</option>
+                                    <option value="Hyderabad">Hyderabad</option>
+                                    <option value="Kolkata">Kolkata</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="areaLocality"><i class="fas fa-map-marker-alt"></i> Area Locality</label>
+                                <input type="text" id="areaLocality" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="localityDesirabilityScore"><i class="fas fa-star"></i> Locality Desirability Score (1-10)</label>
+                                <input type="number" id="localityDesirabilityScore" class="form-control" min="1" max="10" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="temperature"><i class="fas fa-temperature-high"></i> Temperature (°C)</label>
+                                <input type="number" id="temperature" class="form-control" step="0.1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="humidity"><i class="fas fa-tint"></i> Humidity (%)</label>
+                                <input type="number" id="humidity" class="form-control" min="0" max="100" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-tab-content" id="additional-tab">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="tenantPreferred"><i class="fas fa-users"></i> Tenant Preferred</label>
+                                <select id="tenantPreferred" class="form-control" required>
+                                    <option value="">Select Tenant Type</option>
+                                    <option value="Bachelors">Bachelors</option>
+                                    <option value="Bachelors/Family">Bachelors/Family</option>
+                                    <option value="Family">Family</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pointOfContact"><i class="fas fa-address-card"></i> Point of Contact</label>
+                                <select id="pointOfContact" class="form-control" required>
+                                    <option value="">Select Contact Point</option>
+                                    <option value="Contact Owner">Contact Owner</option>
+                                    <option value="Contact Agent">Contact Agent</option>
+                                    <option value="Contact Builder">Contact Builder</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="rentPerSqft"><i class="fas fa-money-bill-wave"></i> Rent per Sq. Ft.</label>
+                                <input type="number" id="rentPerSqft" class="form-control" step="0.1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cityMedianRentSqft"><i class="fas fa-chart-area"></i> City Median Rent per Sq. Ft.</label>
+                                <input type="number" id="cityMedianRentSqft" class="form-control" step="0.1" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                        <button type="button" class="btn" id="prevTab" style="background: var(--gray); display: none;">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn" id="nextTab">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button type="submit" class="btn" id="submitBtn" style="display: none;">
+                            Get Predictions <i class="fas fa-bolt"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="loader" id="loader">
+                <div class="spinner"></div>
+                <p>Analyzing property data and generating predictions...</p>
+            </div>
+            
+            <div class="results" id="results">
+                <h3><i class="fas fa-chart-pie"></i> Prediction Results</h3>
+                <div class="result-cards">
+                    <div class="result-card">
+                        <h3>Property Value Estimate</h3>
+                        <div class="result-value price" id="propertyValue">₹0</div>
+                        <p>Estimated market value of the property</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Monthly Rental Income</h3>
+                        <div class="result-value rent" id="rentalIncome">₹0</div>
+                        <p>Expected monthly rental income</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Investment Potential</h3>
+                        <div class="result-value" id="investmentLabel">-</div>
+                        <p>Confidence: <span id="confidenceScore">-</span></p>
+                    </div>
+                </div>
+                
+                <div class="history" id="historySection">
+                    <h3 style="margin-top: 3rem;"><i class="fas fa-history"></i> Prediction History</h3>
+                    <div class="history-table-container">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Property Type</th>
+                                    <th>Location</th>
+                                    <th>Predicted Value</th>
+                                    <th>Rental Income</th>
+                                    <th>Investment Potential</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <!-- History will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section" style="background-color: #f1f8ff;">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="about-content">
+                <p>Our AI-powered prediction system uses machine learning models trained on extensive real estate data to provide accurate estimates for:</p>
+                <ul>
+                    <li><strong>Property Value:</strong> Estimated market price based on property features and location</li>
+                    <li><strong>Rental Income:</strong> Projected monthly rental income</li>
+                    <li><strong>Investment Potential:</strong> Classification of the property as Excellent or Bad investment</li>
+                </ul>
+                <p>The models consider numerous factors including location, property features, market trends, and economic indicators to deliver reliable predictions.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p>© 2023 RealEstateInsight. All rights reserved.</p>
+                    <p>Contact: info@realestateinsight.com | Phone: +91 96803 92099</p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="fab" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <div class="toast" id="errorToast">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="toastMessage">Failed to get predictions. Please check your connection and try again.</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('propertyForm');
+            const loader = document.getElementById('loader');
+            const results = document.getElementById('results');
+            const propertyValue = document.getElementById('propertyValue');
+            const rentalIncome = document.getElementById('rentalIncome');
+            const investmentLabel = document.getElementById('investmentLabel');
+            const confidenceScore = document.getElementById('confidenceScore');
+            const errorToast = document.getElementById('errorToast');
+            const toastMessage = document.getElementById('toastMessage');
+            const historySection = document.getElementById('historySection');
+            const historyTableBody = document.getElementById('historyTableBody');
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            const scrollToTop = document.getElementById('scrollToTop');
+            
+            // Form tabs functionality
+            const tabs = document.querySelectorAll('.form-tab');
+            const tabContents = document.querySelectorAll('.form-tab-content');
+            const prevTabBtn = document.getElementById('prevTab');
+            const nextTabBtn = document.getElementById('nextTab');
+            const submitBtn = document.getElementById('submitBtn');
+            let currentTab = 0;
+            
+            // Mobile menu toggle
+            menuToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+            });
+            
+            // Scroll to top functionality
+            scrollToTop.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollToTop.style.display = 'flex';
+                } else {
+                    scrollToTop.style.display = 'none';
+                }
+            });
+            
+            // Show specific tab
+            function showTab(index) {
+                tabs.forEach(tab => tab.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                tabs[index].classList.add('active');
+                tabContents[index].classList.add('active');
+                
+                // Show/hide navigation buttons
+                prevTabBtn.style.display = index === 0 ? 'none' : 'block';
+                nextTabBtn.style.display = index === tabs.length - 1 ? 'none' : 'block';
+                submitBtn.style.display = index === tabs.length - 1 ? 'block' : 'none';
+                
+                currentTab = index;
+            }
+            
+            // Initialize first tab
+            showTab(0);
+            
+            // Tab navigation
+            nextTabBtn.addEventListener('click', function() {
+                // Validate current tab before proceeding
+                let isValid = true;
+                const currentTabInputs = tabContents[currentTab].querySelectorAll('input[required], select[required]');
+                
+                currentTabInputs.forEach(input => {
+                    if (!input.value) {
+                        isValid = false;
+                        input.style.borderColor = 'var(--error)';
+                    } else {
+                        input.style.borderColor = '';
+                    }
+                });
+                
+                if (isValid) {
+                    showTab(currentTab + 1);
+                } else {
+                    showError('Please fill all required fields before proceeding.');
+                }
+            });
+            
+            prevTabBtn.addEventListener('click', function() {
+                showTab(currentTab - 1);
+            });
+            
+            // Set default values for easier testing
+            document.getElementById('bhk').value = 2;
+            document.getElementById('size').value = 1000;
+            document.getElementById('areaType').value = 'Super Area';
+            document.getElementById('areaLocality').value = 'Koramangala';
+            document.getElementById('city').value = 'Bangalore';
+            document.getElementById('furnishingStatus').value = 'Semi-Furnished';
+            document.getElementById('tenantPreferred').value = 'Bachelors/Family';
+            document.getElementById('bathroom').value = 2;
+            document.getElementById('pointOfContact').value = 'Contact Owner';
+            document.getElementById('temperature').value = 25.5;
+            document.getElementById('humidity').value = 60;
+            document.getElementById('rentPerSqft').value = 20;
+            document.getElementById('cityMedianRentSqft').value = 18;
+            document.getElementById('localityDesirabilityScore').value = 7;
+            document.getElementById('currentFloor').value = 3;
+            document.getElementById('totalFloors').value = 4;
+            
+            // Show error toast
+            function showError(message) {
+                toastMessage.textContent = message;
+                errorToast.classList.add('visible');
+                
+                setTimeout(() => {
+                    errorToast.classList.remove('visible');
+                }, 5000);
+            }
+            
+            // Fetch prediction history
+            async function fetchPredictionHistory() {
+                try {
+                    const response = await fetch('http://localhost:5000/prediction_history?limit=5');
+                    if (response.ok) {
+                        const data = await response.json();
+                        displayPredictionHistory(data.predictions);
+                    }
+                } catch (error) {
+                    console.error('Error fetching prediction history:', error);
+                }
+            }
+            
+            // Display prediction history
+            function displayPredictionHistory(predictions) {
+                historyTableBody.innerHTML = '';
+                
+                if (predictions.length === 0) {
+                    historySection.style.display = 'none';
+                    return;
+                }
+                
+                historySection.style.display = 'block';
+                
+                predictions.forEach(prediction => {
+                    const row = document.createElement('tr');
+                    
+                    // Parse features if available
+                    let features = {};
+                    if (prediction.features_json) {
+                        try {
+                            features = JSON.parse(prediction.features_json);
+                        } catch (e) {
+                            console.error('Error parsing features JSON:', e);
+                        }
+                    }
+                    
+                    // Format date
+                    const date = new Date(prediction.prediction_timestamp);
+                    const formattedDate = date.toLocaleDateString();
+                    
+                    // Determine investment label
+                    let investmentLabelText = 'N/A';
+                    let investmentLabelClass = '';
+                    
+                    if (prediction.prediction_type === 'label') {
+                        if (prediction.prediction_label === '1') {
+                            investmentLabelText = 'Excellent';
+                            investmentLabelClass = 'label-excellent';
+                        } else if (prediction.prediction_label === '0') {
+                            investmentLabelText = 'Bad';
+                            investmentLabelClass = 'label-bad';
+                        }
+                    }
+                    
+                    row.innerHTML = `
+                        <td>${formattedDate}</td>
+                        <td>${features.BHK || 'N/A'} BHK, ${features.Size || 'N/A'} sq.ft.</td>
+                        <td>${features.City || 'N/A'}, ${features['Area Locality'] || 'N/A'}</td>
+                        <td>${prediction.prediction_type === 'price' ? '₹' + Math.expm1(prediction.predicted_value).toLocaleString('en-IN') : 'N/A'}</td>
+                        <td>${prediction.prediction_type === 'rent' ? '₹' + Math.expm1(prediction.predicted_value).toLocaleString('en-IN') : 'N/A'}</td>
+                        <td class="${investmentLabelClass}">${investmentLabelText}</td>
+                    `;
+                    
+                    historyTableBody.appendChild(row);
+                });
+            }
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Show loader, hide results
+                loader.classList.add('loader-visible');
+                results.classList.remove('results-visible');
+                
+                // Collect form data
+                const formData = {
+                    BHK: parseInt(document.getElementById('bhk').value),
+                    Size: parseInt(document.getElementById('size').value),
+                    'Area Type': document.getElementById('areaType').value,
+                    'Area Locality': document.getElementById('areaLocality').value,
+                    City: document.getElementById('city').value,
+                    'Furnishing Status': document.getElementById('furnishingStatus').value,
+                    'Tenant Preferred': document.getElementById('tenantPreferred').value,
+                    Bathroom: parseInt(document.getElementById('bathroom').value),
+                    'Point of Contact': document.getElementById('pointOfContact').value,
+                    temperature: parseFloat(document.getElementById('temperature').value),
+                    humidity: parseFloat(document.getElementById('humidity').value),
+                    Rent_per_Sqft: parseFloat(document.getElementById('rentPerSqft').value),
+                    City_Median_Rent_Sqft: parseFloat(document.getElementById('cityMedianRentSqft').value),
+                    Locality_Desirability_Score: parseFloat(document.getElementById('localityDesirabilityScore').value),
+                    Current_Floor: parseFloat(document.getElementById('currentFloor').value),
+                    Total_Floors: parseFloat(document.getElementById('totalFloors').value)
+                };
+                
+                try {
+                    // Try to connect to the server first with a health check
+                    try {
+                        const healthResponse = await fetch('http://localhost:5000/health', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (!healthResponse.ok) {
+                            throw new Error('Server is not responding. Please make sure the Flask server is running.');
+                        }
+                    } catch (error) {
+                        throw new Error('Cannot connect to the prediction server. Please make sure the Flask server is running on port 5000.');
+                    }
+                    
+                    // Make API calls sequentially
+                    // First, predict rental income
+                    const rentResponse = await fetch('http://localhost:5000/predict_rent', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    
+                    if (!rentResponse.ok) {
+                        const rentError = await rentResponse.text();
+                        console.error('Rent error:', rentError);
+                        throw new Error('Rental income prediction failed');
+                    }
+                    
+                    const rentData = await rentResponse.json();
+                    
+                    // Add rental income to formData for price prediction
+                    formData.Monthly_Rental_Income = Math.expm1(rentData.prediction);
+                    
+                    // Next, predict property price
+                    const priceResponse = await fetch('http://localhost:5000/predict_price', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    
+                    if (!priceResponse.ok) {
+                        const priceError = await priceResponse.text();
+                        console.error('Price error:', priceError);
+                        throw new Error('Property price prediction failed');
+                    }
+                    
+                    const priceData = await priceResponse.json();
+                    
+                    // Prepare data for label prediction
+                    const labelData = {
+                        ...formData,
+                        Rent_Yield_Estimate: (formData.Monthly_Rental_Income * 12) / Math.expm1(priceData.prediction),
+                        Est_Property_Value: Math.expm1(priceData.prediction)
+                    };
+                    
+                    // Finally, predict investment label
+                    const labelResponse = await fetch('http://localhost:5000/predict_label', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(labelData)
+                    });
+                    
+                    if (!labelResponse.ok) {
+                        const labelError = await labelResponse.text();
+                        console.error('Label error:', labelError);
+                        throw new Error('Investment label prediction failed');
+                    }
+                    
+                    const labelResult = await labelResponse.json();
+                    
+                    // Update UI with results
+                    // Apply expm1 to convert from log scale to actual values
+                    const propertyValueActual = Math.expm1(priceData.prediction);
+                    const rentalIncomeActual = Math.expm1(rentData.prediction);
+                    
+                    propertyValue.textContent = `₹${propertyValueActual.toLocaleString('en-IN')}`;
+                    rentalIncome.textContent = `₹${rentalIncomeActual.toLocaleString('en-IN')}`;
+                    
+                    // Map label to Excellent (1) or Bad (0)
+                    let labelText = 'N/A';
+                    if (labelResult.prediction === '1') {
+                        labelText = 'Excellent';
+                        investmentLabel.className = 'result-value label-excellent';
+                    } else if (labelResult.prediction === '0') {
+                        labelText = 'Bad';
+                        investmentLabel.className = 'result-value label-bad';
+                    }
+                    
+                    investmentLabel.textContent = labelText;
+                    
+                    confidenceScore.textContent = labelResult.confidence ? 
+                        `${(labelResult.confidence * 100).toFixed(1)}%` : 'N/A';
+                    
+                    // Show results, hide loader
+                    results.classList.add('results-visible');
+                    loader.classList.remove('loader-visible');
+                    
+                    // Fetch and display updated prediction history
+                    fetchPredictionHistory();
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    showError(error.message || 'Failed to get predictions. Please check your connection and try again.');
+                    loader.classList.remove('loader-visible');
+                }
+            });
+            
+            // Initial fetch of prediction history
+            fetchPredictionHistory();
+        });
+    </script>
+</body>
+</html>
